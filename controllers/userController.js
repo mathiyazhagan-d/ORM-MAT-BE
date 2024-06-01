@@ -19,6 +19,7 @@ export const authUser = asyncHandler( async (req,res) => {
                 name: user.name,
                 email: user.email,
                 isAdmin: user.isAdmin,
+                role: user.role,
                 token: generateToken(user._id)
             })
         }else{
@@ -89,32 +90,36 @@ export const updateUserProfile = asyncHandler( async (req,res) => {
 //@route POST /api/users
 //@access Public
 
-export const registerUser = asyncHandler(async (req,res) => {
-    const {name, email, password} = req.body;
-    const userExists = await User.findOne({email});
-    if(userExists){
-        res.status(400)
-        throw new Error('User already exists')
+export const registerUser = asyncHandler(async (req, res) => {
+    const { name, email, password, role } = req.body;
+
+    const userExists = await User.findOne({ email });
+
+    if (userExists) {
+        res.status(400);
+        throw new Error('User already exists');
     }
 
     const user = await User.create({
         name,
         email,
-        password
-    })
+        password,
+        role // Include the role in user creation
+    });
 
-    if(user){
-        res.status(201)
-        res.json(
-            {_id: user._id,
+    if (user) {
+        res.status(201);
+        res.json({
+            _id: user._id,
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
-            token: generateToken(user._id)}
-            )
-    }else{
-        res.status(400)
-        throw new Error('Invalid User Data')
+            role: user.role, // Include the role in the response
+            token: generateToken(user._id)
+        });
+    } else {
+        res.status(400);
+        throw new Error('Invalid User Data');
     }
 });
 

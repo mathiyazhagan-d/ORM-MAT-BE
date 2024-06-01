@@ -16,21 +16,31 @@ import {
     bulkImport
 } from '../controllers/productController.js';
 
+// router.route('/')
+//     .get(getProducts)
+//     .post(protectRoute, isAdmin, createProduct); 
 router.route('/')
     .get(getProducts)
-    .post(protectRoute, isAdmin, createProduct); 
-router.get('/top', getTopProducts);
+    .post( createProduct); 
 
+
+    
+router.get('/top', getTopProducts);
+router.route('/product').post( createProduct); 
 router.post('/bulkimport',bulkImport);
 
 router.get('/genre/:genre', getProductsByGenre);
 
 router.route('/search/:keyword').get(searchProducts);
 
+// router.route('/:id')
+//     .get(getProductById)
+//     .delete(protectRoute, isAdmin, deleteProduct)
+//     .put(protectRoute, isAdmin, updateProduct);
 router.route('/:id')
     .get(getProductById)
-    .delete(protectRoute, isAdmin, deleteProduct)
-    .put(protectRoute, isAdmin, updateProduct);
+    .delete( deleteProduct)
+    .put( updateProduct);
 
 router.route('/:id/reviews').post(protectRoute, addProductReview);
 

@@ -70,24 +70,26 @@ export const deleteProduct = asyncHandler( async (req,res) => {
 // @desc Create Product
 // @route POST /api/products/
 // @access Private/Admin
-export const createProduct = asyncHandler( async (req,res) => {
+export const createProduct = asyncHandler(async (req, res) => {
+    console.log("api calling ")
+    const productData = req.body; // Access the entire request body
 
     const product = new Product({
-        name: '',
-        price: 0,
-        user: req.user._id,
-        image: 'add image from your local',
-        ingredients: '',
-        category: '',
-        countInStock: 0,
-        numReviews: 0,
-        description: ''
+        name: productData.name || '',
+        price: productData.price || 0,
+        // user: req.user._id,
+        image: productData.image || 'add image from your local',
+        ingredients: productData.ingredients || '',
+        category: productData.category || '',
+        countInStock: productData.countInStock || 0,
+        numReviews: productData.numReviews || 0,
+        description: productData.description || ''
     });
 
     const createdProduct = await product.save();
-    res.status(201).json(createdProduct)
-    
+    res.status(201).json(createdProduct);
 });
+
 
 export const bulkImport = asyncHandler(async (req, res) => {
     try {
